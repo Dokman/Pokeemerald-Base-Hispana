@@ -1347,7 +1347,6 @@ void CB2_NewGameBirchSpeech_FromNewMainMenu(void) // Combination of the Above fu
     ResetBgsAndClearDma3BusyFlags(0);
     SetGpuReg(REG_OFFSET_DISPCNT, 0);
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
-    InitBgsFromTemplates(0, sMainMenuBgTemplates, ARRAY_COUNT(sMainMenuBgTemplates));
     InitBgFromTemplate(&sBirchBgTemplate);
     SetVBlankCallback(NULL);
     SetGpuReg(REG_OFFSET_BG2CNT, 0);
@@ -1363,8 +1362,8 @@ void CB2_NewGameBirchSpeech_FromNewMainMenu(void) // Combination of the Above fu
     DmaFill32(3, 0, OAM, OAM_SIZE);
     DmaFill16(3, 0, PLTT, PLTT_SIZE);
     ResetPaletteFade();
-    LZ77UnCompVram(sBirchSpeechShadowGfx, (u8 *)VRAM);
-    LZ77UnCompVram(sBirchSpeechBgMap, (u8 *)(BG_SCREEN_ADDR(7)));
+    DecompressDataWithHeaderVram(sBirchSpeechShadowGfx, (void *)VRAM);
+    DecompressDataWithHeaderVram(sBirchSpeechBgMap, (void *)(BG_SCREEN_ADDR(30)));
     LoadPalette(sBirchSpeechBgPals, BG_PLTT_ID(0), 2 * PLTT_SIZE_4BPP);
     LoadPalette(sBirchSpeechPlatformBlackPal, BG_PLTT_ID(0) + 1, PLTT_SIZEOF(8));
     ResetTasks();
@@ -1388,7 +1387,6 @@ void CB2_NewGameBirchSpeech_FromNewMainMenu(void) // Combination of the Above fu
     SetGpuReg(REG_OFFSET_BLDALPHA, 0);
     SetGpuReg(REG_OFFSET_BLDY, 0);
     ShowBg(0);
-    ShowBg(1);
     SetVBlankCallback(VBlankCB_MainMenu);
     SetMainCallback2(CB2_MainMenu);
     InitWindows(sNewGameBirchSpeechTextWindows);
@@ -1413,9 +1411,9 @@ static void Task_NewGameBirchSpeech_WaitToShowBirch(u8 taskId)
         gSprites[spriteId].y = 60;
         gSprites[spriteId].invisible = FALSE;
         gSprites[spriteId].oam.objMode = ST_OAM_OBJ_BLEND;
-        NewGameBirchSpeech_StartFadeInTarget1OutTarget2(taskId, 0);
-        NewGameBirchSpeech_StartFadePlatformOut(taskId, 0);
-        gTasks[taskId].tTimer = 0;
+        NewGameBirchSpeech_StartFadeInTarget1OutTarget2(taskId, 10);
+        NewGameBirchSpeech_StartFadePlatformOut(taskId, 20);
+        gTasks[taskId].tTimer = 80;
         gTasks[taskId].func = Task_NewGameBirchSpeech_WaitForSpriteFadeInWelcome;
     }
 }
