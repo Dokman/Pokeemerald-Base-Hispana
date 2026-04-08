@@ -51,11 +51,14 @@ RustboroCity_DevonCorp_3F_EventScript_MeetPresident::
 	msgbox RustboroCity_DevonCorp_3F_Text_MrStoneWantYouToHaveThis, MSGBOX_DEFAULT
 	playfanfare MUS_OBTAIN_ITEM
 	message RustboroCity_DevonCorp_3F_Text_ReceivedPokenav
+	message RustboroCity_DevonCorp_3F_Text_ReceivedDexnav
 	waitfanfare
 	setflag FLAG_SYS_POKENAV_GET
 	setflag FLAG_RECEIVED_POKENAV
+	setflag FLAG_SYS_DEXNAV_GET
 	setflag FLAG_HIDE_RUSTBORO_CITY_POKEMON_SCHOOL_SCOTT
 	msgbox RustboroCity_DevonCorp_3F_Text_MrStoneExplainPokenavRestUp, MSGBOX_DEFAULT
+	msgbox RustboroCity_DevonCorp_3F_Text_MrStoneExplainDexNav, MSGBOX_DEFAULT
 	closemessage
 	call Common_EventScript_OutOfCenterPartyHeal
 	msgbox RustboroCity_DevonCorp_3F_Text_MrStoneGoWithCautionAndCare, MSGBOX_DEFAULT
@@ -220,6 +223,9 @@ RustboroCity_DevonCorp_3F_Text_MrStoneWantYouToHaveThis:
 
 RustboroCity_DevonCorp_3F_Text_ReceivedPokenav:
 	.string "{PLAYER} recibió un POKéNAV.$"
+	
+RustboroCity_DevonCorp_3F_Text_ReceivedDexnav:
+	.string "{PLAYER} recibió un DEXNAV.$"
 
 RustboroCity_DevonCorp_3F_Text_MrStoneExplainPokenavRestUp:
 	.string "SR. PEÑAS: Este dispositivo es…\p"
@@ -236,6 +242,19 @@ RustboroCity_DevonCorp_3F_Text_MrStoneExplainPokenavRestUp:
 	.string "y AQUA, no paran de dar problemas.\p"
 	.string "Me parece que sería buena idea\n"
 	.string "que descansaras antes de seguir.$"
+	
+RustboroCity_DevonCorp_3F_Text_MrStoneExplainDexNav:
+    .string "SR. PEÑAS: Además del POKéNAV,\p"
+    .string "¡has recibido el DEXNAV!\n"
+    .string "Esta herramienta avanzada te permite\n"
+    .string "rastrear Pokémon específicos en la hierba.\p"
+    .string "Podrás encontrar especies raras,\n"
+    .string "y observar sus movimientos.\p"
+    .string "Úsalo para descubrir secretos\n"
+    .string "y capturar Pokémon especiales.\p"
+    .string "¡Seguro que te será de gran ayuda\n"
+    .string "en tu aventura por HOENN!\p"
+    .string "¡Buena suerte, ENTRENADOR!$"
 
 RustboroCity_DevonCorp_3F_Text_MrStoneGoWithCautionAndCare:
 	.string "SR. PEÑAS: En fin, {PLAYER}{KUN},\n"
