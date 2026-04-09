@@ -162,7 +162,7 @@ static int ProcessInput_Options_Two(int selection);
 static int ProcessInput_Options_Three(int selection);
 static int ProcessInput_Options_Four(int selection);
 static int ProcessInput_Options_Eleven(int selection);
-static int ProcessInput_Sound(int selection);
+// static int ProcessInput_Sound(int selection);
 static int ProcessInput_FrameType(int selection);
 static const u8 *const OptionTextDescription(void);
 static const u8 *const OptionTextRight(u8 menuItem);
@@ -280,6 +280,7 @@ static const u8 *const OptionTextRight(u8 menuItem)
     case MENU_MAIN:     return sOptionMenuItemsNamesMain[menuItem];
     case MENU_CUSTOM:   return sOptionMenuItemsNamesCustom[menuItem];
     }
+    return NULL;
 }
 
 // Menu left side text conditions
@@ -311,6 +312,7 @@ static bool8 CheckConditions(int selection)
         case MENUITEM_CUSTOM_COUNT:           return TRUE;
         }
     }
+    return TRUE;
 }
 
 // Descriptions
@@ -387,10 +389,12 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledCustom[MENUITEM_CUSTOM
 
 static const u8 *const OptionTextDescription(void)
 {
-    u8 menuItem = sOptions->menuCursor[sOptions->submenu];
+    u8 submenu = sOptions->submenu;
+    if (submenu >= MENU_COUNT) submenu = 0;
+    u8 menuItem = sOptions->menuCursor[submenu];
     u8 selection;
 
-    switch (sOptions->submenu)
+    switch (submenu)
     {
     case MENU_MAIN:
         if (!CheckConditions(menuItem))
@@ -407,24 +411,31 @@ static const u8 *const OptionTextDescription(void)
             selection = 0;
         return sOptionMenuItemDescriptionsCustom[menuItem][selection];
     }
+    return NULL;
 }
 
 static u8 MenuItemCount(void)
 {
-    switch (sOptions->submenu)
+    u8 submenu = sOptions->submenu;
+    if (submenu >= MENU_COUNT) submenu = 0;
+    switch (submenu)
     {
     case MENU_MAIN:     return MENUITEM_MAIN_COUNT;
     case MENU_CUSTOM:   return MENUITEM_CUSTOM_COUNT;
     }
+    return 0;
 }
 
 static u8 MenuItemCancel(void)
 {
-    switch (sOptions->submenu)
+    u8 submenu = sOptions->submenu;
+    if (submenu >= MENU_COUNT) submenu = 0;
+    switch (submenu)
     {
     case MENU_MAIN:     return MENUITEM_MAIN_CANCEL;
     case MENU_CUSTOM:   return MENUITEM_CUSTOM_CANCEL;
     }
+    return 0;
 }
 
 // Main code
@@ -575,7 +586,7 @@ static bool8 OptionsMenu_LoadGraphics(void) // Load all the tilesets, tilemaps, 
     case 1:
         if (FreeTempTileDataBuffersIfPossible() != TRUE)
         {
-            LZDecompressWram(sOptionsPlusTilemap, sBg2TilemapBuffer);
+            DecompressDataWithHeaderWram(sOptionsPlusTilemap, sBg2TilemapBuffer);
             sOptions->gfxLoadState++;
         }
         break;
@@ -587,7 +598,7 @@ static bool8 OptionsMenu_LoadGraphics(void) // Load all the tilesets, tilemaps, 
     case 3:
         if (FreeTempTileDataBuffersIfPossible() != TRUE)
         {
-            LZDecompressWram(sScrollBgTilemap, sBg3TilemapBuffer);
+            DecompressDataWithHeaderWram(sScrollBgTilemap, sBg3TilemapBuffer);
             sOptions->gfxLoadState++;
         }
         break;
@@ -605,7 +616,7 @@ static bool8 OptionsMenu_LoadGraphics(void) // Load all the tilesets, tilemaps, 
 
 void CB2_InitOptionPlusMenu(void)
 {
-    u32 i, taskId;
+    u32 i;
     switch (gMain.state)
     {
     default:
@@ -708,7 +719,7 @@ void CB2_InitOptionPlusMenu(void)
         gMain.state++;
         break;
     case 10:
-        taskId = CreateTask(Task_OptionMenuFadeIn, 0);
+        CreateTask(Task_OptionMenuFadeIn, 0);
         
         sOptions->arrowTaskId = AddScrollIndicatorArrowPairParameterized(SCROLL_ARROW_UP, 240 / 2, 20, 110, MENUITEM_MAIN_COUNT - 1, 110, 110, 0);
 
@@ -760,11 +771,12 @@ static void Task_OptionMenuFadeIn(u8 taskId)
 
 static void Task_OptionMenuProcessInput(u8 taskId)
 {
-    int i = 0;
+    u8 submenu = sOptions->submenu;
+    if (submenu >= MENU_COUNT) submenu = 0;
     u8 optionsToDraw = min(OPTIONS_ON_SCREEN , MenuItemCount());
     if (JOY_NEW(A_BUTTON))
     {
-        if (sOptions->menuCursor[sOptions->submenu] == MenuItemCancel())
+        if (sOptions->menuCursor[submenu] == MenuItemCancel())
             gTasks[taskId].func = Task_OptionMenuSave;
     }
     else if (JOY_NEW(B_BUTTON))
@@ -810,7 +822,8 @@ static void Task_OptionMenuProcessInput(u8 taskId)
         {
             if (++sOptions->menuCursor[sOptions->submenu] >= MenuItemCount()-1) // Scroll all the way to the top.
             {
-                sOptions->visibleCursor[sOptions->submenu] = optionsToDraw-2;
+                if (sOptions->submenu < MENU_COUNT)
+                    sOptions->visibleCursor[sOptions->submenu] = optionsToDraw-2;
                 sOptions->menuCursor[sOptions->submenu] = MenuItemCount() - optionsToDraw-1;
                 ScrollAll(1);
                 sOptions->visibleCursor[sOptions->submenu] = sOptions->menuCursor[sOptions->submenu] = 0;
@@ -995,8 +1008,8 @@ static int GetMiddleX(const u8 *txt1, const u8 *txt2, const u8 *txt3)
     int widthMid = GetStringWidth(1, txt2, 0);
     int widthRight = GetStringWidth(1, txt3, 0);
 
-    widthMid -= (198 - 104);
-    xMid = (widthLeft - widthMid - widthRight) / 2 + 104;
+    widthMid -= (204 - 90);
+    xMid = (widthLeft - widthMid - widthRight) / 2 + 90;
     return xMid;
 }
 
@@ -1039,16 +1052,7 @@ static int ProcessInput_Options_Eleven(int selection)
 }
 
 // Process Input functions ****SPECIFIC****
-static int ProcessInput_Sound(int selection)
-{
-    if (JOY_NEW(DPAD_LEFT | DPAD_RIGHT))
-    {
-        selection ^= 1;
-        SetPokemonCryStereo(selection);
-    }
-
-    return selection;
-}
+// Function ProcessInput_Sound removed to resolve unused warning.
 
 static int ProcessInput_FrameType(int selection)
 {
@@ -1101,14 +1105,16 @@ static void DrawChoices_Options_Four(const u8 *const *const strings, int selecti
     styles[selection] = 1;
     xMid = GetMiddleX(strings[order[0]], strings[order[1]], strings[order[2]]);
 
-    DrawOptionMenuChoice(strings[order[0]], 104, y, styles[order[0]], active);
+    DrawOptionMenuChoice(strings[order[0]], 90, y, styles[order[0]], active);
     DrawOptionMenuChoice(strings[order[1]], xMid, y, styles[order[1]], active);
-    DrawOptionMenuChoice(strings[order[2]], GetStringRightAlignXOffset(1, strings[order[2]], 198), y, styles[order[2]], active);
+    DrawOptionMenuChoice(strings[order[2]], GetStringRightAlignXOffset(1, strings[order[2]], 204), y, styles[order[2]], active);
 }
 
 static void ReDrawAll(void)
 {
-    u8 menuItem = sOptions->menuCursor[sOptions->submenu] - sOptions->visibleCursor[sOptions->submenu];
+    u8 submenu = sOptions->submenu;
+    if (submenu >= MENU_COUNT) submenu = 0;
+    u8 menuItem = sOptions->menuCursor[submenu] - sOptions->visibleCursor[submenu];
     u8 i;
     u8 optionsToDraw = min(OPTIONS_ON_SCREEN, MenuItemCount());
 
@@ -1123,7 +1129,7 @@ static void ReDrawAll(void)
     else
     {
         if (sOptions->arrowTaskId == TASK_NONE)
-            sOptions->arrowTaskId = sOptions->arrowTaskId = AddScrollIndicatorArrowPairParameterized(SCROLL_ARROW_UP, 240 / 2, 20, 110, MenuItemCount() - 1, 110, 110, 0);
+            sOptions->arrowTaskId = AddScrollIndicatorArrowPairParameterized(SCROLL_ARROW_UP, 240 / 2, 20, 110, MenuItemCount() - 1, 110, 110, 0);
 
     }
 
@@ -1152,8 +1158,8 @@ static void DrawChoices_BattleScene(int selection, int y)
     u8 styles[2] = {0};
     styles[selection] = 1;
 
-    DrawOptionMenuChoice(gText_BattleSceneOn, 104, y, styles[0], active);
-    DrawOptionMenuChoice(gText_BattleSceneOff, GetStringRightAlignXOffset(FONT_NORMAL, gText_BattleSceneOff, 198), y, styles[1], active);
+    DrawOptionMenuChoice(gText_BattleSceneOn, 90, y, styles[0], active);
+    DrawOptionMenuChoice(gText_BattleSceneOff, GetStringRightAlignXOffset(FONT_NORMAL, gText_BattleSceneOff, 204), y, styles[1], active);
 }
 
 static void DrawChoices_BattleStyle(int selection, int y)
@@ -1162,8 +1168,8 @@ static void DrawChoices_BattleStyle(int selection, int y)
     u8 styles[2] = {0};
     styles[selection] = 1;
 
-    DrawOptionMenuChoice(gText_BattleStyleShift, 104, y, styles[0], active);
-    DrawOptionMenuChoice(gText_BattleStyleSet, GetStringRightAlignXOffset(FONT_NORMAL, gText_BattleStyleSet, 198), y, styles[1], active);
+    DrawOptionMenuChoice(gText_BattleStyleShift, 90, y, styles[0], active);
+    DrawOptionMenuChoice(gText_BattleStyleSet, GetStringRightAlignXOffset(FONT_NORMAL, gText_BattleStyleSet, 204), y, styles[1], active);
 }
 
 static void DrawChoices_Sound(int selection, int y)
@@ -1172,8 +1178,8 @@ static void DrawChoices_Sound(int selection, int y)
     u8 styles[2] = {0};
     styles[selection] = 1;
 
-    DrawOptionMenuChoice(gText_SoundMono, 104, y, styles[0], active);
-    DrawOptionMenuChoice(gText_SoundStereo, GetStringRightAlignXOffset(FONT_NORMAL, gText_SoundStereo, 198), y, styles[1], active);
+    DrawOptionMenuChoice(gText_SoundMono, 90, y, styles[0], active);
+    DrawOptionMenuChoice(gText_SoundStereo, GetStringRightAlignXOffset(FONT_NORMAL, gText_SoundStereo, 204), y, styles[1], active);
 }
 
 static void DrawChoices_ButtonMode(int selection, int y)
@@ -1183,9 +1189,9 @@ static void DrawChoices_ButtonMode(int selection, int y)
     int xMid = GetMiddleX(gText_ButtonTypeNormal, gText_ButtonTypeLR, gText_ButtonTypeLEqualsA);
     styles[selection] = 1;
 
-    DrawOptionMenuChoice(gText_ButtonTypeNormal, 104, y, styles[0], active);
+    DrawOptionMenuChoice(gText_ButtonTypeNormal, 90, y, styles[0], active);
     DrawOptionMenuChoice(gText_ButtonTypeLR, xMid, y, styles[1], active);
-    DrawOptionMenuChoice(gText_ButtonTypeLEqualsA, GetStringRightAlignXOffset(1, gText_ButtonTypeLEqualsA, 198), y, styles[2], active);
+    DrawOptionMenuChoice(gText_ButtonTypeLEqualsA, GetStringRightAlignXOffset(1, gText_ButtonTypeLEqualsA, 204), y, styles[2], active);
 }
 
 static const u8 sText_Normal[] = _("NORMAL");
@@ -1194,15 +1200,15 @@ static void DrawChoices_BarSpeed(int selection, int y) //HP and EXP
     bool8 active = CheckConditions(MENUITEM_CUSTOM_EXP_BAR);
 
     if (selection == 0)
-         DrawOptionMenuChoice(sText_Normal, 104, y, 1, active);
+         DrawOptionMenuChoice(sText_Normal, 90, y, 1, active);
     else if (selection < 10)
     {
         u8 textPlus[] = _("+1{0x77}{0x77}{0x77}{0x77}{0x77}"); // 0x77 is to clear INSTANT text
         textPlus[1] = CHAR_0 + selection;
-        DrawOptionMenuChoice(textPlus, 104, y, 1, active);
+        DrawOptionMenuChoice(textPlus, 90, y, 1, active);
     }
     else
-        DrawOptionMenuChoice(sText_Instant, 104, y, 1, active);
+        DrawOptionMenuChoice(sText_Instant, 90, y, 1, active);
 }
 
 static void DrawChoices_UnitSystem(int selection, int y)
@@ -1211,8 +1217,8 @@ static void DrawChoices_UnitSystem(int selection, int y)
     u8 styles[2] = {0};
     styles[selection] = 1;
 
-    DrawOptionMenuChoice(gText_UnitSystemImperial, 104, y, styles[0], active);
-    DrawOptionMenuChoice(gText_UnitSystemMetric, GetStringRightAlignXOffset(1, gText_UnitSystemMetric, 198), y, styles[1], active);
+    DrawOptionMenuChoice(gText_UnitSystemImperial, 90, y, styles[0], active);
+    DrawOptionMenuChoice(gText_UnitSystemMetric, GetStringRightAlignXOffset(1, gText_UnitSystemMetric, 204), y, styles[1], active);
 }
 
 static void DrawChoices_FrameType(int selection, int y)
@@ -1243,8 +1249,8 @@ static void DrawChoices_FrameType(int selection, int y)
 
     text[i] = EOS;
 
-    DrawOptionMenuChoice(gText_FrameType, 104, y, 0, active);
-    DrawOptionMenuChoice(text, 128, y, 1, active);
+    DrawOptionMenuChoice(gText_FrameType, 90, y, 0, active);
+    DrawOptionMenuChoice(text, 114, y, 1, active);
 }
 
 static void DrawChoices_Font(int selection, int y)
@@ -1253,8 +1259,8 @@ static void DrawChoices_Font(int selection, int y)
     u8 styles[2] = {0};
     styles[selection] = 1;
 
-    DrawOptionMenuChoice(gText_OptionFontEmerald, 104, y, styles[0], active);
-    DrawOptionMenuChoice(gText_OptionFontFireRed, GetStringRightAlignXOffset(1, gText_OptionFontFireRed, 198), y, styles[1], active);
+    DrawOptionMenuChoice(gText_OptionFontEmerald, 90, y, styles[0], active);
+    DrawOptionMenuChoice(gText_OptionFontFireRed, GetStringRightAlignXOffset(1, gText_OptionFontFireRed, 204), y, styles[1], active);
 }
 
 static void DrawChoices_MatchCall(int selection, int y)
@@ -1263,8 +1269,8 @@ static void DrawChoices_MatchCall(int selection, int y)
     u8 styles[2] = {0};
     styles[selection] = 1;
 
-    DrawOptionMenuChoice(gText_BattleSceneOn, 104, y, styles[0], active);
-    DrawOptionMenuChoice(gText_BattleSceneOff, GetStringRightAlignXOffset(1, gText_BattleSceneOff, 198), y, styles[1], active);
+    DrawOptionMenuChoice(gText_BattleSceneOn, 90, y, styles[0], active);
+    DrawOptionMenuChoice(gText_BattleSceneOff, GetStringRightAlignXOffset(1, gText_BattleSceneOff, 204), y, styles[1], active);
 }
 
 

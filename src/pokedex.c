@@ -4221,7 +4221,6 @@ static void PrintMonInfo(u32 num, u32 value, u32 owned, u32 newEntry)
 
 void PrintMonMeasurements(u16 species, u32 owned)
 {
-<<<<<<< HEAD
     u32 x = GetMeasurementTextPositions(DEX_HEADER_X);
     u32 yTop = GetMeasurementTextPositions(DEX_Y_TOP);
     u32 yBottom = GetMeasurementTextPositions(DEX_Y_BOTTOM);

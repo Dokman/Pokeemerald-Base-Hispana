@@ -2148,7 +2148,7 @@
 	special CreateEnemyEventMon
 	.endm
 
-<<<<<<< HEAD
+
 	.macro setdynamicaifunc func:req
 	callnative ScriptSetDynamicAiFunc, requests_effects=1
 	.4byte \func
