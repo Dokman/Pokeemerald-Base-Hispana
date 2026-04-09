@@ -1317,6 +1317,18 @@ void CreateMonWithIVs(struct Pokemon *mon, u16 species, u8 level, u32 personalit
     CalculateMonStats(mon);
 }
 
+void CreateMonWithNature(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 nature)
+{
+    u32 personality = GetMonPersonality(species, MON_GENDER_RANDOM, nature, RANDOM_UNOWN_LETTER);
+    CreateMonWithIVs(mon, species, level, personality, OTID_STRUCT_PLAYER_ID, fixedIV);
+}
+
+void CreateMonWithGenderNatureLetter(struct Pokemon *mon, u16 species, u8 level, u8 fixedIV, u8 gender, u8 nature, u8 unownLetter)
+{
+    u32 personality = GetMonPersonality(species, gender, nature, unownLetter);
+    CreateMonWithIVs(mon, species, level, personality, OTID_STRUCT_PLAYER_ID, fixedIV);
+}
+
 void SetBoxMonIVs(struct BoxPokemon *mon, u8 fixedIV)
 {
     u32 i, value;

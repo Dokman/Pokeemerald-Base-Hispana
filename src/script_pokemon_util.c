@@ -362,9 +362,6 @@ void SetTeraType(struct ScriptContext *ctx)
  */
 static u32 ScriptGiveMonParameterized(u8 side, u8 slot, u16 species, u8 level, enum Item item, enum PokeBall ball, u8 nature, u8 abilityNum, u8 gender, u16 *evs, u16 *ivs, enum Move *moves, enum ShinyMode shinyMode, bool8 gmaxFactor, enum Type teraType, u8 dmaxLevel)
 {
-    enum NationalDexOrder nationalDexNum;
-
-    int sentToPc;
     struct Pokemon mon;
     u32 i;
     bool32 isShiny;
@@ -625,9 +622,9 @@ u32 BirchCase_GiveMonParameterized(u16 species, u8 level, u16 item, u8 ball, u8 
     //
     //  This function is created by Lunos and Ghoulslash as part of the custom givemon script in Expansion. I had to port it and rename it so that - 
     //  I could have it working in pokeemerald and Expansion with #ifdefs without clashing with any changes Expansion makes to the old one
+    struct Pokemon mon;
     u16 nationalDexNum;
     int sentToPc;
-    struct Pokemon mon;
     u32 i;
     u8 genderRatio = gSpeciesInfo[species].genderRatio;
     u16 targetSpecies;
@@ -638,12 +635,12 @@ u32 BirchCase_GiveMonParameterized(u16 species, u8 level, u16 item, u8 ball, u8 
 #ifdef POKEMON_EXPANSION
         if (OW_SYNCHRONIZE_NATURE >= GEN_6
          && (gSpeciesInfo[species].eggGroups[0] == EGG_GROUP_NO_EGGS_DISCOVERED || OW_SYNCHRONIZE_NATURE == GEN_7))
-            nature = PickWildMonNature();
+            nature = PickWildMonNature(species);
         else
             nature = Random() % NUM_NATURES;
 #else
         if ((gSpeciesInfo[species].eggGroups[0] == EGG_GROUP_NO_EGGS_DISCOVERED))
-                nature = PickWildMonNature();
+                nature = PickWildMonNature(species);
             else
                 nature = Random() % NUM_NATURES;
 #endif
@@ -718,7 +715,7 @@ u32 BirchCase_GiveMonParameterized(u16 species, u8 level, u16 item, u8 ball, u8 
 
 #ifdef POKEMON_EXPANSION
     // In case a mon with a form changing item is given. Eg: SPECIES_ARCEUS_NORMAL with ITEM_SPLASH_PLATE will transform into SPECIES_ARCEUS_WATER upon gifted.
-    targetSpecies = GetFormChangeTargetSpecies(&mon, FORM_CHANGE_ITEM_HOLD, 0);
+    targetSpecies = GetFormChangeTargetSpecies(&mon, FORM_CHANGE_ITEM_HOLD);
     if (targetSpecies != SPECIES_NONE)
         SetMonData(&mon, MON_DATA_SPECIES, &targetSpecies);
 #endif
