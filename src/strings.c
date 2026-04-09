@@ -338,6 +338,21 @@ const u8 gText_ReturnToWaitingRoom[] = _("¿Quieres volver a la sala de espera?"
 const u8 gText_CancelChallenge[] = _("¿Cancelas el desafío?");
 const u8 gText_EscapeFromHere[] = _("¿Quieres escapar de aquí y volver\na {STR_VAR_1}?");
 const u8 gText_ReturnToHealingSpot[] = _("¿Quieres volver al último lugar de\ncura que usaste en {STR_VAR_1}?");
+
+const u8 gText_SizeSlash[] = _("TAMAÑO /");
+const u8 gText_FirmSlash[] = _("DUREZA /");
+const u8 gText_Var1DotVar2[] = _("{STR_VAR_1},{STR_VAR_2}”");
+const u8 gText_Var1DotVar2_Metric[] = _("{STR_VAR_1},{STR_VAR_2} cm");
+
+// Berry firmness strings
+const u8 gBerryFirmnessString_VerySoft[] = _("Muy blanda");
+const u8 gBerryFirmnessString_Soft[] = _("Blanda");
+const u8 gBerryFirmnessString_Hard[] = _("Dura");
+const u8 gBerryFirmnessString_VeryHard[] = _("Muy dura");
+const u8 gBerryFirmnessString_SuperHard[] = _("Superdura");
+
+const u8 gText_NumberVar1Var2[] = _("{NO}{STR_VAR_1} {STR_VAR_2}");
+const u8 gText_BerryTag[] = _("ETIQUETA BAYA");
 const u8 gText_PauseUntilPress[] = _("{PAUSE_UNTIL_PRESS}");
 const u8 gJPText_AreYouSureYouWantToSpinTradeMon[] = _("{STR_VAR_1}を ぐるぐるこうかんに\nだして よろしいですか？");
 ALIGNED(4) const u8 gText_OnlyPkmnForBattle[] = _("Es el único con el\nque puedes luchar.");
@@ -946,6 +961,7 @@ const u8 gText_FrontierFacilityAreInelegible[] = _(" are inelegible");
 
 const u8 gText_YesNo[] = _("Sí\nNo");
 const u8 gText_SelectorArrow3[] = _("▶");
+<<<<<<< HEAD
 const u8 gText_Peekaboo[] = _("Bebita linda");
 const u8 gText_CommErrorCheckConnections[] = _("Error de conexión…\nRevisa todas las conexiones, apaga\nla consola y vuelve a encenderla.");
 const u8 gText_CommErrorEllipsis[] = _("Error de conexión…");
@@ -958,6 +974,49 @@ const u8 gText_CopperCard[] = _("Cobre");
 const u8 gText_SilverCard[] = _("Plata");
 const u8 gText_GoldCard[] = _("Oro");
 const u8 gText_Day[] = _("Día");
+=======
+const u8 gText_Peekaboo[] = _("PEEKABOO!");
+const u8 gText_CommErrorCheckConnections[] = _("Communication error…\nPlease check all connections,\nthen turn the power OFF and ON.");
+const u8 gText_CommErrorEllipsis[] = _("Communication error…");
+const u8 gText_MoveCloserToLinkPartner[] = _("Move closer to your link partner(s).\nAvoid obstacles between partners.");
+const u8 gText_ABtnRegistrationCounter[] = _("A Button: Registration Counter");
+const u8 gText_ABtnTitleScreen[] = _("A Button: Title Screen");
+const u8 gText_Option[] = _("OPTION");
+const u8 gText_TextSpeed[] = _("TEXT SPEED");
+const u8 gText_BattleScene[] = _("BATTLE SCENE");
+const u8 gText_BattleStyle[] = _("BATTLE STYLE");
+const u8 gText_Sound[] = _("SOUND");
+const u8 gText_Frame[] = _("FRAME");
+const u8 gText_OptionMenuCancel[] = _("CANCEL");
+const u8 gText_Font[] = _("FONT");  //tx_optionsPlus
+const u8 gText_OptionMatchCalls[] = _("OVERWORLD CALLS");    //tx_optionsPlus
+const u8 gText_OptionMenuSave[] = _("SAVE");
+const u8 gText_ButtonMode[] = _("BUTTON MODE");
+const u8 gText_TextSpeedSlow[] = _("SLOW");
+const u8 gText_TextSpeedMid[] = _("MID");
+const u8 gText_TextSpeedFast[] = _("FAST");
+const u8 gText_BattleSceneOn[] = _("ON");
+const u8 gText_BattleSceneOff[] = _("OFF");
+const u8 gText_BattleStyleShift[] = _("SHIFT");
+const u8 gText_BattleStyleSet[] = _("SET");
+const u8 gText_UnitSystemMetric[] = _("METRIC");       //tx_optionsPlus
+const u8 gText_UnitSystemImperial[] = _("IMPERIAL");   //tx_optionsPlus
+const u8 gText_OptionFontEmerald[] = _("EMERALD");    //tx_optionsPlus
+const u8 gText_OptionFontFireRed[] = _("FRLG");        //tx_optionsPlus
+const u8 gText_SoundMono[] = _("MONO");
+const u8 gText_SoundStereo[] = _("STEREO");
+const u8 gText_FrameType[] = _("TYPE");
+const u8 gText_FrameTypeNumber[] = _("");
+const u8 gText_ButtonTypeNormal[] = _("NORMAL");
+const u8 gText_ButtonTypeLR[] = _("LR");
+const u8 gText_ButtonTypeLEqualsA[] = _("L=A");
+const u8 gText_NumPlayerLink[] = _("{STR_VAR_1}P LINK");
+const u8 gText_BronzeCard[] = _("BRONZE");
+const u8 gText_CopperCard[] = _("COPPER");
+const u8 gText_SilverCard[] = _("SILVER");
+const u8 gText_GoldCard[] = _("GOLD");
+const u8 gText_Day[] = _("DAY");
+>>>>>>> da405f7e37961ee76c1252fe310760beb60f3969
 const u8 gText_Colon3[] = _(":");
 const u8 gText_Confirm2[] = _("¡Ya!");
 const u8 gText_Days[] = _("Días");

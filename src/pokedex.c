@@ -4221,6 +4221,7 @@ static void PrintMonInfo(u32 num, u32 value, u32 owned, u32 newEntry)
 
 void PrintMonMeasurements(u16 species, u32 owned)
 {
+<<<<<<< HEAD
     u32 x = GetMeasurementTextPositions(DEX_HEADER_X);
     u32 yTop = GetMeasurementTextPositions(DEX_Y_TOP);
     u32 yBottom = GetMeasurementTextPositions(DEX_Y_BOTTOM);
@@ -4328,7 +4329,7 @@ static void PrintOwnedMonHeight(u16 species)
 
 u8* ConvertMonHeightToString(u32 height)
 {
-    if (UNITS == UNITS_IMPERIAL)
+    if (gSaveBlock2Ptr->optionsUnitSystem == 0) // Imperial
         return ConvertMonHeightToImperialString(height);
     else
         return ConvertMonHeightToMetricString(height);
@@ -4349,7 +4350,7 @@ static void PrintOwnedMonWeight(u16 species)
 
 u8* ConvertMonWeightToString(u32 weight)
 {
-    if (UNITS == UNITS_IMPERIAL)
+    if (gSaveBlock2Ptr->optionsUnitSystem == 0) // Imperial
         return ConvertMonWeightToImperialString(weight);
     else
         return ConvertMonWeightToMetricString(weight);
@@ -4360,7 +4361,7 @@ static u8* ConvertMonHeightToImperialString(u32 height)
     u8* heightString = Alloc(WEIGHT_HEIGHT_STR_MEM);
     u32 inches, feet, index = 0;
 
-    inches = (height * 10000) / CM_PER_INCH_FACTOR;
+    inches = (height * 10000) / 254;
     if (inches % 10 >= 5)
         inches += 10;
     feet = inches / INCHES_IN_FOOT_FACTOR;
@@ -4403,7 +4404,7 @@ static u8* ConvertMonWeightToImperialString(u32 weight)
 {
     u8* weightString = Alloc(WEIGHT_HEIGHT_STR_MEM);
     bool32 output = FALSE;
-    u32 index = 0, lbs = (weight * 100000) / DECAGRAMS_IN_POUND;
+    u32 index = 0, lbs = (weight * 100000) / 4536;
 
     if (lbs % 10u >= 5)
         lbs += 10;
@@ -4443,6 +4444,7 @@ static u8* ConvertMonWeightToImperialString(u32 weight)
     lbs %= 1000;
     weightString[index++] = (lbs / 100) + CHAR_0;
     lbs %= 100;
+
     weightString[index++] = CHAR_DEC_SEPARATOR;
     weightString[index++] = (lbs / 10) + CHAR_0;
     weightString[index++] = CHAR_SPACE;
