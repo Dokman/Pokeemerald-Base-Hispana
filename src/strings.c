@@ -338,6 +338,21 @@ const u8 gText_ReturnToWaitingRoom[] = _("¿Quieres volver a la sala de espera?"
 const u8 gText_CancelChallenge[] = _("¿Cancelas el desafío?");
 const u8 gText_EscapeFromHere[] = _("¿Quieres escapar de aquí y volver\na {STR_VAR_1}?");
 const u8 gText_ReturnToHealingSpot[] = _("¿Quieres volver al último lugar de\ncura que usaste en {STR_VAR_1}?");
+
+const u8 gText_SizeSlash[] = _("TAMAÑO /");
+const u8 gText_FirmSlash[] = _("DUREZA /");
+const u8 gText_Var1DotVar2[] = _("{STR_VAR_1},{STR_VAR_2}”");
+const u8 gText_Var1DotVar2_Metric[] = _("{STR_VAR_1},{STR_VAR_2} cm");
+
+// Berry firmness strings
+const u8 gBerryFirmnessString_VerySoft[] = _("Muy blanda");
+const u8 gBerryFirmnessString_Soft[] = _("Blanda");
+const u8 gBerryFirmnessString_Hard[] = _("Dura");
+const u8 gBerryFirmnessString_VeryHard[] = _("Muy dura");
+const u8 gBerryFirmnessString_SuperHard[] = _("Superdura");
+
+const u8 gText_NumberVar1Var2[] = _("{NO}{STR_VAR_1} {STR_VAR_2}");
+const u8 gText_BerryTag[] = _("ETIQUETA BAYA");
 const u8 gText_PauseUntilPress[] = _("{PAUSE_UNTIL_PRESS}");
 const u8 gJPText_AreYouSureYouWantToSpinTradeMon[] = _("{STR_VAR_1}を ぐるぐるこうかんに\nだして よろしいですか？");
 ALIGNED(4) const u8 gText_OnlyPkmnForBattle[] = _("Es el único con el\nque puedes luchar.");
@@ -952,6 +967,35 @@ const u8 gText_CommErrorEllipsis[] = _("Error de conexión…");
 const u8 gText_MoveCloserToLinkPartner[] = _("Procura que no haya distancia\nni obstáculos entre las consolas.");
 const u8 gText_ABtnRegistrationCounter[] = _("Botón A: mostrador de inscripción");
 const u8 gText_ABtnTitleScreen[] = _("Botón A: pantalla del título");
+const u8 gText_Option[] = _("OPCIONES");
+const u8 gText_TextSpeed[] = _("VELOC. TEXTO");
+const u8 gText_BattleScene[] = _("ANIM. COMBATE");
+const u8 gText_BattleStyle[] = _("TIPO COMBATE");
+const u8 gText_Sound[] = _("SONIDO");
+const u8 gText_Frame[] = _("MARCO");
+const u8 gText_OptionMenuCancel[] = _("SALIR");
+const u8 gText_Font[] = _("FUENTE");  //tx_optionsPlus
+const u8 gText_OptionMatchCalls[] = _("LLAMADAS");    //tx_optionsPlus
+const u8 gText_OptionMenuSave[] = _("GUARDAR");
+const u8 gText_ButtonMode[] = _("CONTROLES");
+const u8 gText_TextSpeedSlow[] = _("LENTA");
+const u8 gText_TextSpeedMid[] = _("MEDIA");
+const u8 gText_TextSpeedFast[] = _("RÁPIDA");
+const u8 gText_BattleSceneOn[] = _("SÍ");
+const u8 gText_BattleSceneOff[] = _("NO");
+const u8 gText_BattleStyleShift[] = _("CAMBIAR");
+const u8 gText_BattleStyleSet[] = _("MANTENER");
+const u8 gText_UnitSystemMetric[] = _("MÉTRICO");       //tx_optionsPlus
+const u8 gText_UnitSystemImperial[] = _("IMPERIAL");   //tx_optionsPlus
+const u8 gText_OptionFontEmerald[] = _("ESMERALDA");    //tx_optionsPlus
+const u8 gText_OptionFontFireRed[] = _("RFVH");        //tx_optionsPlus
+const u8 gText_SoundMono[] = _("MONO");
+const u8 gText_SoundStereo[] = _("ESTÉREO");
+const u8 gText_FrameType[] = _("TIPO");
+const u8 gText_FrameTypeNumber[] = _("");
+const u8 gText_ButtonTypeNormal[] = _("NORMAL");
+const u8 gText_ButtonTypeLR[] = _("LR");
+const u8 gText_ButtonTypeLEqualsA[] = _("L=A");
 const u8 gText_NumPlayerLink[] = _("Conexión {STR_VAR_1}J");
 const u8 gText_BronzeCard[] = _("Bronce");
 const u8 gText_CopperCard[] = _("Cobre");

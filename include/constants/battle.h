@@ -711,6 +711,9 @@ enum BattleEnvironments
 // Indicator for the party summary bar to display an empty slot.
 #define HP_EMPTY_SLOT 0xFFFF
 
+#define B_HEALTHBAR_PIXELS 48
+#define B_EXPBAR_PIXELS    64
+
 enum MoveTarget
 {
     TARGET_NONE,
